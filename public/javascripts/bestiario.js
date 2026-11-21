@@ -13,86 +13,27 @@ function mostrarMensagem(texto, erro = false) {
     }, 6500);
 }
 
-let listaBestiario = [];
+const listaBestiario = Array.from(
+    document.querySelectorAll('#bestiario tr[data-id]')
+).map(tr => ({
+    id_criatura: Number(tr.dataset.id),
+    nome_besta: tr.cells[1].textContent,
+    localizacao: tr.cells[2].textContent,
+    ecos: tr.cells[3].textContent,
+    id_fraqueza: tr.dataset.fraqueza,
+    id_status: tr.dataset.status
+}));
 
-async function carregarRegistro() {
-    const tbody = document.getElementById('bestiario');
+function carregarRegistro() {
+    const mensagem = document.getElementById('mensagem').textContent;
+
+    if (mensagem.trim()) {
+        sessionStorage.setItem('mensagemBestiario', mensagem);
+    }
+
     const pesquisa = document.getElementById('pesquisa').value;
 
-    try {
-        const resposta = await fetch(
-            '/api/registros?pesquisa=' + encodeURIComponent(pesquisa)
-        );
-
-        const registros = await resposta.json();
-
-        if (!resposta.ok) {
-            throw new Error(registros.erro);
-        }
-
-        listaBestiario = registros;
-
-        document.getElementById('contador').textContent =
-            registros.length + ' registro(s)';
-
-        if (registros.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td class="empty" colspan="7">
-                        Nenhum registro encontrado.
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-        tbody.innerHTML = registros.map((b, i) => `
-            <tr data-id="${Number(b.id_criatura)}"
-                style="--delay:${Math.min(i * 45, 450)}ms">
-
-                <td>${b.id_criatura}</td>
-                <td>${b.nome_besta}</td>
-                <td>${b.localizacao}</td>
-                <td>${b.ecos}</td>
-                <td>${b.nome_fraqueza}</td>
-
-                <td>
-                    <span class="status ${Number(b.id_status) === 2 ? 'alive' : ''}">
-                        ${b.nome_status}
-                    </span>
-                </td>
-
-                <td>
-                    <div class="actions">
-
-                        <button type="button"
-                            onclick="editarRegistro(${Number(b.id_criatura)})">
-                            Editar
-                        </button>
-
-                        <button type="button" class="danger"
-                            onclick="deletarRegistro(${Number(b.id_criatura)})">
-                            Deletar
-                        </button>
-
-                    </div>
-                </td>
-            </tr>
-        `).join('');
-
-    } catch (erro) {
-        document.getElementById('contador').textContent =
-            'Falha na consulta';
-
-        tbody.innerHTML = `
-            <tr>
-                <td class="empty" colspan="7">
-                    ${erro.message}
-                </td>
-            </tr>
-        `;
-    }
+    location.href = '/?pesquisa=' + encodeURIComponent(pesquisa);
 }
 
 function editarRegistro(id) {
@@ -224,9 +165,11 @@ function limparPesquisa() {
 document.getElementById('form-registro').addEventListener(
     'submit', async (evento) => {
 
-        evento.preventDefault();
-
         const id = document.getElementById('id_criatura').value;
+
+        if (!id) return;
+
+        evento.preventDefault();
 
         const bestiario = {
             nome: document.getElementById('nome').value,
@@ -236,15 +179,9 @@ document.getElementById('form-registro').addEventListener(
             id_status: document.getElementById('id_status').value
         };
 
-        const metodo = id ? 'PUT' : 'POST';
-
-        const endereco = id
-            ? '/api/registros/' + id
-            : '/api/registros';
-
         try {
-            const resposta = await fetch(endereco, {
-                method: metodo,
+            const resposta = await fetch('/api/registros/' + id, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -272,4 +209,12 @@ document.getElementById('form-registro').addEventListener(
     }
 );
 
-carregarRegistro();
+const mensagemInicial =
+    document.getElementById('mensagem').textContent.trim()
+    || sessionStorage.getItem('mensagemBestiario');
+
+sessionStorage.removeItem('mensagemBestiario');
+
+if (mensagemInicial) {
+    mostrarMensagem(mensagemInicial);
+}

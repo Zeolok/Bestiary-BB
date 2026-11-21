@@ -1,11 +1,326 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Arquivo dos Caçadores</title>
+
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+
+    <div class="fog" aria-hidden="true"></div>
+    <div id="embers" aria-hidden="true"></div>
+
+    <header>
+        <p class="eyebrow">Yharnam • Arquivo da Oficina</p>
+        <h1>BESTIÁRIO</h1>
+        <p>Registro de Caçada</p>
+    </header>
+
+    <div class="layout">
+
+        <aside aria-label="Códigos de referência">
+
+            <section class="panel">
+
+                <h2>Status da criatura</h2>
+
+                <ul class="legend">
+                    <li><b>1</b> Derrotado(a)</li>
+                    <li><b>2</b> Não Derrotado(a)</li>
+                </ul>
+
+            </section>
+
+            <section class="panel">
+
+                <h2>Fraquezas</h2>
+
+                <ul class="legend">
+                    <li><b>1</b> Físico</li>
+                    <li><b>2</b> Cortante</li>
+                    <li><b>3</b> Arcano</li>
+                    <li><b>4</b> Fogo</li>
+                    <li><b>5</b> Elétrico</li>
+                </ul>
+
+            </section>
+
+        </aside>
+
+        <main>
+
+            <section class="panel" id="editor">
+
+                <p class="section-label">I — Anotações da caçada</p>
+
+                <h2 id="titulo-form">Novo registro</h2>
+
+                <form id="form-registro" action="/itens" method="post">
+
+                    <input type="hidden" id="id_criatura">
+
+                    <div class="fields">
+
+                        <label class="field wide">
+                            Nome
+                            <input
+                                type="text"
+                                id="nome"
+                                name="nome"
+                                placeholder="Nome da criatura"
+                                required
+                            >
+                        </label>
+
+                        <label class="field wide">
+                            Localização
+                            <input
+                                type="text"
+                                id="localizacao"
+                                name="localizacao"
+                                placeholder="Região de Yharnam"
+                                required
+                            >
+                        </label>
+
+                        <label class="field">
+                            Quantidade de Ecos Sangrentos
+                            <input
+                                type="number"
+                                id="ecos"
+                                name="ecos"
+                                placeholder="0"
+                                required
+                            >
+                        </label>
+
+                        <label class="field">
+                            Fraqueza
+                            <input
+                                type="number"
+                                id="id_fraqueza"
+                                name="id_fraqueza"
+                                placeholder="1–5"
+                                required
+                            >
+                        </label>
+
+                        <label class="field">
+                            Status
+                            <input
+                                type="number"
+                                id="id_status"
+                                name="id_status"
+                                placeholder="1–2"
+                                required
+                            >
+                        </label>
+
+                    </div>
+
+                    <div class="botoes">
+
+                        <button
+                            class="primary"
+                            type="submit"
+                            id="btn-salvar"
+                        >
+                            ◆ Salvar registro
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+            <section class="panel">
+
+                <p class="section-label">II — Investigação</p>
+
+                <h2>Pesquisar registro</h2>
+
+                <form
+                    id="form-pesquisa"
+                    class="search"
+                    action="/"
+                    method="get"
+                >
+
+                    <label>
+                        Nome ou localização
+                        <input
+                            type="text"
+                            id="pesquisa"
+                            name="pesquisa"
+                            value="<%= pesquisa %>"
+                            placeholder="Investigue os registros..."
+                        >
+                    </label>
+
+                    <button type="submit">
+                        Pesquisar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="quiet"
+                        onclick="limparPesquisa()"
+                    >
+                        Limpar
+                    </button>
+
+                </form>
+
+            </section>
+
+            <section class="panel archive">
+
+                <img
+                    class="watermark"
+                    src="/images/hunters-mark.png"
+                    alt=""
+                    aria-hidden="true"
+                >
+
+                <div class="archive-head">
+
+                    <div>
+                        <p class="section-label">
+                            III — Registros preservados
+                        </p>
+
+                        <h2>Bestiário</h2>
+                    </div>
+
+                    <span class="count" id="contador">
+                        <%= registros.length %> registro(s)
+                    </span>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Localização</th>
+                                <th>Ecos</th>
+                                <th>Fraqueza</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="bestiario">
+
+                          <% if (registros.length === 0) { %>
+                            <tr>
+                              <td class="empty" colspan="7">
+                                Nenhum registro encontrado.
+                              </td>
+                            </tr>
+                          <% } %>
+
+                          <% registros.forEach((b, i) => { %>
+
+                            <tr
+                              data-id="<%= b.id_criatura %>"
+                              data-fraqueza="<%= b.id_fraqueza %>"
+                              data-status="<%= b.id_status %>"
+                              style="--delay: <%= Math.min(i * 45, 450) %>ms"
+                            >
+
+                              <td><%= b.id_criatura %></td>
+                              <td><%= b.nome_besta %></td>
+                              <td><%= b.localizacao %></td>
+                              <td><%= b.ecos %></td>
+                              <td><%= b.nome_fraqueza %></td>
+
+                              <td>
+                                <span class="status <%= Number(b.id_status) === 2 ? 'alive' : '' %>">
+                                  <%= b.nome_status %>
+                                </span>
+                              </td>
+
+                              <td>
+                                <div class="actions">
+
+                                  <button
+                                    type="button"
+                                    onclick="editarRegistro(Number(this.closest('tr').dataset.id))"
+                                  >
+                                    Editar
+                                  </button>
+
+                                  <button
+                                    type="button"
+                                    class="danger"
+                                    onclick="deletarRegistro(Number(this.closest('tr').dataset.id))"
+                                  >
+                                    Deletar
+                                  </button>
+
+                                </div>
+                              </td>
+
+                            </tr>
+
+                          <% }); %>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <footer>
+        ᗘ &nbsp; A hunter is a hunter, even in a dream. &nbsp; ᗛ
+    </footer>
+
+    <div id="mensagem" role="status" aria-live="polite"> <%= cadastrado ? 'Registrado com sucesso, bom caçador.' : '' %> </div>
+
+    <dialog id="confirmacao">
+
+        <h2>Apagar registro?</h2>
+
+        <p>
+            O registro será removido permanentemente do bestiário,
+            bom caçador.
+        </p>
+
+        <form method="dialog" class="botoes">
+
+            <button value="cancelar" autofocus>
+                Cancelar
+            </button>
+
+            <button value="confirmar" class="danger">
+                Apagar registro
+            </button>
+
+        </form>
+
+    </dialog>
+
+    <script src="/javascripts/bestiario.js"></script>
+
+</body>
+
 </html>

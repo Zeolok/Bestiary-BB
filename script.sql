@@ -12,7 +12,6 @@ INSERT INTO estatistica (nome_fraqueza) VALUES
 ('Fogo'),
 ('Elétrico');
 SELECT * FROM estatistica;
-DROP TABLE estatistica;
 
 CREATE TABLE statuscriatura (
 id_status INT AUTO_INCREMENT PRIMARY KEY,
@@ -22,7 +21,6 @@ INSERT INTO statuscriatura (nome_status) VALUES
 ('Derrotado(a)'),
 ('Não Derrotado(a)');
 SELECT * FROM statuscriatura;
-DROP TABLE statuscriatura;
 
 CREATE TABLE bestiario (
     id_criatura INT AUTO_INCREMENT PRIMARY KEY,
@@ -41,4 +39,3 @@ INSERT INTO bestiario (nome, localizacao, ecos, id_fraqueza, id_status) VALUES
 ('Mártir Logarius', 'Castelo Cainhurst Abandonado', 25000, 1, 1),
 ('Orfão de Kos', 'Litoral', 30000, 2, 2);
 SELECT * FROM bestiario;
-DROP TABLE bestiario;
