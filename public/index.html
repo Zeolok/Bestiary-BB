@@ -1,72 +1,273 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta charset="utf-8">
+    <title>Arquivo dos Caçadores</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Arquivo dos Caçadores</title>
-
-<link rel="stylesheet" href="/stylesheets/style.css">
-
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
 
-<div class="fog" aria-hidden="true"></div><div id="embers" aria-hidden="true"></div>
+    <div class="fog" aria-hidden="true"></div>
+    <div id="embers" aria-hidden="true"></div>
 
-<header><p class="eyebrow">Yharnam • Arquivo da Oficina</p><h1>BESTIÁRIO</h1><p>Registro de Caçada</p></header>
+    <header>
+        <p class="eyebrow">Yharnam • Arquivo da Oficina</p>
+        <h1>BESTIÁRIO</h1>
+        <p>Registro de Caçada</p>
+    </header>
 
-<div class="layout">
+    <div class="layout">
 
-<aside aria-label="Códigos de referência">
+        <aside aria-label="Códigos de referência">
 
-<section class="panel"><h2>Status da criatura</h2><ul class="legend"><li><b>1</b> Derrotado(a)</li><li><b>2</b> Não Derrotado(a)</li></ul></section>
+            <section class="panel">
 
-<section class="panel"><h2>Fraquezas</h2><ul class="legend"><li><b>1</b> Físico</li><li><b>2</b> Cortante</li><li><b>3</b> Arcano</li><li><b>4</b> Fogo</li><li><b>5</b> Elétrico</li></ul></section>
+                <h2>Status da criatura</h2>
 
-</aside>
+                <ul class="legend">
+                    <li><b>1</b> Derrotado(a)</li>
+                    <li><b>2</b> Não Derrotado(a)</li>
+                </ul>
 
-<main>
+            </section>
 
-<section class="panel" id="editor"><p class="section-label">I — Anotações da caçada</p><h2 id="titulo-form">Novo registro</h2>
+            <section class="panel">
 
-<form id="form-registro"><input type="hidden" id="id_criatura"><div class="fields">
+                <h2>Fraquezas</h2>
 
-<label class="field wide">Nome<input type="text" id="nome" placeholder="Nome da criatura" required></label>
+                <ul class="legend">
+                    <li><b>1</b> Físico</li>
+                    <li><b>2</b> Cortante</li>
+                    <li><b>3</b> Arcano</li>
+                    <li><b>4</b> Fogo</li>
+                    <li><b>5</b> Elétrico</li>
+                </ul>
 
-<label class="field wide">Localização<input type="text" id="localizacao" placeholder="Região de Yharnam" required></label>
+            </section>
 
-<label class="field">Quantidade de Ecos Sangrentos<input type="number" id="ecos" placeholder="0" required></label>
+        </aside>
 
-<label class="field">Fraqueza<input type="number" id="id_fraqueza" placeholder="1–5" required></label>
+        <main>
 
-<label class="field">Status<input type="number" id="id_status" placeholder="1–2" required></label>
+            <section class="panel" id="editor">
 
-</div><div class="botoes"><button class="primary" type="submit" id="btn-salvar">◆ Salvar registro</button></div></form></section>
+                <p class="section-label">I — Anotações da caçada</p>
 
-<section class="panel"><p class="section-label">II — Investigação</p><h2>Pesquisar registro</h2><form id="form-pesquisa" class="search" onsubmit="pesquisar(event)"><label>Nome ou localização<input type="text" id="pesquisa" placeholder="Investigue os registros..."></label><button type="submit">Pesquisar</button><button type="button" class="quiet" onclick="limparPesquisa()">Limpar</button></form></section>
+                <h2 id="titulo-form">Novo registro</h2>
 
-<section class="panel archive">
+                <form id="form-registro">
 
-<img class="watermark" src="/images/hunters-mark.png" alt="" aria-hidden="true">
+                    <input type="hidden" id="id_criatura">
 
-<div class="archive-head"><div><p class="section-label">III — Registros preservados</p><h2>Bestiário</h2></div><span class="count" id="contador">Consultando arquivo</span></div>
+                    <div class="fields">
 
-<div class="table-wrap"><table><thead><tr><th>ID</th><th>Nome</th><th>Localização</th><th>Ecos</th><th>Fraqueza</th><th>Status</th><th>Ações</th></tr></thead><tbody id="bestiario"><tr><td class="empty" colspan="7">Consultando os registros...</td></tr></tbody></table></div></section>
+                        <label class="field wide">
+                            Nome
+                            <input
+                                type="text"
+                                id="nome"
+                                placeholder="Nome da criatura"
+                                required
+                            >
+                        </label>
 
-</main></div>
+                        <label class="field wide">
+                            Localização
+                            <input
+                                type="text"
+                                id="localizacao"
+                                placeholder="Região de Yharnam"
+                                required
+                            >
+                        </label>
 
-<footer>◆ &nbsp; A hunter is a hunter, even in a dream. &nbsp; ◆</footer>
+                        <label class="field">
+                            Quantidade de Ecos Sangrentos
+                            <input
+                                type="number"
+                                id="ecos"
+                                placeholder="0"
+                                required
+                            >
+                        </label>
 
-<div id="mensagem" role="status" aria-live="polite"></div>
+                        <label class="field">
+                            Fraqueza
+                            <input
+                                type="number"
+                                id="id_fraqueza"
+                                placeholder="1–5"
+                                required
+                            >
+                        </label>
 
-<dialog id="confirmacao"><h2>Apagar registro?</h2><p>O registro será removido permanentemente do bestiário, bom caçador.</p><form method="dialog" class="botoes"><button value="cancelar" autofocus>Cancelar</button><button value="confirmar" class="danger">Apagar registro</button></form></dialog>
+                        <label class="field">
+                            Status
+                            <input
+                                type="number"
+                                id="id_status"
+                                placeholder="1–2"
+                                required
+                            >
+                        </label>
 
-<script src="/javascripts/bestiario.js"></script>
+                    </div>
+
+                    <div class="botoes">
+
+                        <button
+                            class="primary"
+                            type="submit"
+                            id="btn-salvar"
+                        >
+                            ◆ Salvar registro
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+            <section class="panel">
+
+                <p class="section-label">II — Investigação</p>
+
+                <h2>Pesquisar registro</h2>
+
+                <form
+                    id="form-pesquisa"
+                    class="search"
+                    onsubmit="pesquisar(event)"
+                >
+
+                    <label>
+                        Nome ou localização
+                        <input
+                            type="text"
+                            id="pesquisa"
+                            placeholder="Investigue os registros..."
+                        >
+                    </label>
+
+                    <button type="submit">
+                        Pesquisar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="quiet"
+                        onclick="limparPesquisa()"
+                    >
+                        Limpar
+                    </button>
+
+                </form>
+
+            </section>
+
+            <section class="panel archive">
+
+                <img
+                    class="watermark"
+                    src="/images/hunters-mark.png"
+                    alt=""
+                    aria-hidden="true"
+                >
+
+                <div class="archive-head">
+
+                    <div>
+                        <p class="section-label">
+                            III — Registros preservados
+                        </p>
+
+                        <h2>Bestiário</h2>
+                    </div>
+
+                    <span class="count" id="contador">
+                        Consultando arquivo
+                    </span>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Localização</th>
+                                <th>Ecos</th>
+                                <th>Fraqueza</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="bestiario">
+
+                            <tr>
+                                <td class="empty" colspan="7">
+                                    Consultando os registros...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <footer>
+        ◆ &nbsp; A hunter is a hunter, even in a dream. &nbsp; ◆
+    </footer>
+
+    <div
+        id="mensagem"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <dialog id="confirmacao">
+
+        <h2>Apagar registro?</h2>
+
+        <p>
+            O registro será removido permanentemente do bestiário,
+            bom caçador.
+        </p>
+
+        <form method="dialog" class="botoes">
+
+            <button value="cancelar" autofocus>
+                Cancelar
+            </button>
+
+            <button value="confirmar" class="danger">
+                Apagar registro
+            </button>
+
+        </form>
+
+    </dialog>
+
+    <script src="/javascripts/bestiario.js"></script>
 
 </body>
 

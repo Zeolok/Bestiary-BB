@@ -1,13 +1,980 @@
+/* =========================================
+   1. IMPORTAÇÃO DAS FONTES
+========================================= */
+
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=IM+Fell+English:ital@0;1&display=swap');
 
-:root{color-scheme:dark;--gold:#b7a17a;--muted:#938a7d;--blood:#792d35;--line:#685a45;--ink:#d8d0c1;--serif:'Cinzel',Georgia,serif}
 
-[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font:17px 'IM Fell English',Georgia,serif;background:radial-gradient(ellipse at 50% 0%,#383032 0%,#171619 37%,#09090b 85%);overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;box-shadow:inset 0 0 130px 30px #0008;background:repeating-linear-gradient(0deg,#ffffff02 0 1px,transparent 1px 4px)}
+/* =========================================
+   2. VARIÁVEIS DE CORES E FONTES
+========================================= */
 
-.fog{position:fixed;inset:-35%;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 20% 40%,#a7a0a018,transparent 48%),radial-gradient(ellipse at 75% 70%,#80535b24,transparent 42%);filter:blur(38px);animation:fog 20s ease-in-out infinite alternate}@keyframes fog{to{transform:translate(12%,5%) scale(1.15)}}
+:root {
+    color-scheme: dark;
 
-.ember{position:fixed;bottom:-10px;left:var(--x);width:2px;height:3px;background:#b96b55;box-shadow:0 0 7px #e57b60;pointer-events:none;animation:rise var(--t) linear infinite;animation-delay:var(--d);opacity:0;z-index:0}@keyframes rise{20%{opacity:.65}80%{opacity:.3}100%{transform:translate(50px,-105vh);opacity:0}}
+    --gold: #b7a17a;
+    --muted: #938a7d;
+    --blood: #792d35;
+    --line: #685a45;
+    --ink: #d8d0c1;
 
-header{text-align:center;padding:46px 20px 27px;border-bottom:1px solid #685a4555;position:relative}header:after{content:'◆';position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);color:var(--gold);background:#171619;padding:0 14px;font-size:14px}.eyebrow{font:11px var(--serif);letter-spacing:.48em;color:var(--gold);margin:0 0 15px}h1,h2,h3{font-family:var(--serif);font-weight:500}header h1{font-size:clamp(29px,4.5vw,58px);letter-spacing:.08em;margin:0;text-shadow:0 3px 20px #000,0 0 35px #a77c5940}header p:last-child{color:var(--muted);font-style:italic;margin:12px 0 0}.layout{max-width:1600px;margin:32px auto 0;padding:0 32px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:start;position:relative}.panel{position:relative;border:1px solid var(--line);background:linear-gradient(140deg,#222123e8,#101012ed);box-shadow:0 8px 34px #0008,inset 0 0 0 4px #1119,inset 0 0 0 5px #b7a17a24;padding:24px;animation:appear .7s ease both}.panel:before,.panel:after{content:'◆';position:absolute;font-size:10px;color:var(--gold);line-height:1;background:#171619;padding:2px;pointer-events:none}.panel:before{top:-6px;left:-6px}.panel:after{bottom:-6px;right:-6px}@keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}aside{display:grid;gap:18px;position:sticky;top:22px}aside .panel{padding:18px}aside h2{font-size:13px;letter-spacing:.17em;color:var(--gold);margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid #685a4577}.legend{list-style:none;margin:0;padding:0}.legend li{padding:8px 0;border-bottom:1px solid #ffffff09;font-size:16px}.legend li:last-child{border:0}.legend b{display:inline-block;width:22px;color:var(--gold);font-weight:normal;font-family:var(--serif)}.legend small{color:var(--muted)}main{min-width:0;display:grid;gap:22px}.section-label{font:10px var(--serif);letter-spacing:.28em;color:var(--muted);margin:0 0 8px}h2{font-size:22px;letter-spacing:.08em;margin:0 0 20px;color:#dfd2bc}.fields{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}.field{display:grid;gap:8px;grid-column:span 2}.field.wide{grid-column:span 3}label{font:11px var(--serif);letter-spacing:.1em;color:var(--gold)}input{width:100%;min-width:0;border:1px solid #665947;background:#09090bd9;color:var(--ink);padding:12px 13px;font:17px Georgia,serif;border-radius:0;outline:none;transition:border-color .25s,box-shadow .25s,background .25s}input:focus{border-color:#c6b18a;box-shadow:0 0 15px #b7a17a22;background:#1e191b}input::placeholder{color:#716a63;font-style:italic}.botoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center}button{position:relative;isolation:isolate;overflow:hidden;cursor:pointer;padding:11px 20px;border:1px solid #8d7a59;color:#e3d6bf;background:linear-gradient(#37302a,#181719);font:500 11px var(--serif);letter-spacing:.08em;transition:background .25s,border-color .25s,box-shadow .25s,transform .15s;min-height:39px}button:hover{background:linear-gradient(#554339,#252023);border-color:#dfc9a0;box-shadow:0 0 20px #bd9b4f30}button:focus-visible{outline:2px solid #d9c399;outline-offset:3px}button:active{transform:scale(.96);box-shadow:0 0 25px #a13a42aa}button.primary{background:linear-gradient(#54282e,#29181d);border-color:#957061}button.danger{border-color:#754248;color:#d3a5a3;background:#24171b}button.quiet{background:#121214;color:#a69c8c}button .spark{position:absolute;z-index:-1;left:50%;top:50%;width:12px;height:12px;border-radius:50%;background:#f3d9ac88;transform:translate(-50%,-50%);animation:strike .55s ease-out forwards;pointer-events:none}@keyframes strike{to{width:420px;height:420px;opacity:0}}.search{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.search label{flex:1;min-width:180px;display:grid;gap:8px}.archive{overflow:hidden;min-height:360px;background:linear-gradient(120deg,#161518e8,#0c0c0ee8)}.watermark{position:absolute;left:50%;top:55%;transform:translate(-50%,-50%);width:min(250px,55%);height:450px;opacity:.15;pointer-events:none;filter:drop-shadow(0 0 16px #9c4d48);color:#a16c60}.archive-head,.table-wrap{position:relative;z-index:1}.archive-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}.archive-head h2{margin:0}.count{font:10px var(--serif);letter-spacing:.13em;color:var(--gold);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:750px}th,td{text-align:left;padding:15px 12px;border-bottom:1px solid #685a4550}th{font:11px var(--serif);letter-spacing:.1em;color:var(--gold);background:#222024b0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}td{font-size:17px;background:#0e0e1020}td:first-child{color:#9e8a6c;font-variant-numeric:tabular-nums}tbody tr{transition:background .25s,box-shadow .25s;animation:appear .45s both;animation-delay:var(--delay,0ms)}tbody tr:hover{background:linear-gradient(90deg,#a9915529,#62333d24,transparent);box-shadow:inset 2px 0 #b7a17a}tbody tr.selected{background:#713b433f;box-shadow:inset 3px 0 #bd9c78}.actions{display:flex;gap:7px;white-space:nowrap}.actions button{padding:8px 10px;font-size:10px}.status{display:inline-flex;align-items:center;gap:7px;font-size:15px}.status:before{content:'◆';font-size:8px;color:#b5a487}.status.alive:before{color:#b9595c;filter:drop-shadow(0 0 4px #b9595c)}.empty{text-align:center;padding:42px;color:var(--muted)}#mensagem:empty{display:none}#mensagem{position:fixed;z-index:10;right:25px;bottom:25px;max-width:min(420px,calc(100vw - 50px));border:1px solid var(--gold);background:#191719f5;padding:18px 24px;box-shadow:0 8px 35px #000b;font-size:18px;animation:appear .3s both}#mensagem.error{border-color:#ab5259;color:#e3a4a4}footer{text-align:center;padding:36px 15px;color:#817467;font-style:italic;font-size:30px}dialog{width:min(470px,90vw);color:var(--ink);border:1px solid var(--gold);background:linear-gradient(#252023,#111013);padding:30px;box-shadow:0 0 70px #000; text-align:center}dialog[open]{animation:appear .25s both}dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}dialog h2{margin-bottom:12px}dialog .botoes{justify-content:center}.editing{border-color:#b69a70;box-shadow:0 0 26px #9e715824}
+    --serif: 'Cinzel', Georgia, serif;
+}
 
-@media(max-width:1000px){.layout{grid-template-columns:180px minmax(0,1fr);padding:0 20px;gap:18px}.panel{padding:18px}}@media(max-width:730px){.layout{grid-template-columns:1fr;padding:0 14px}aside{position:static;grid-template-columns:1fr 1fr;gap:12px}.field,.field.wide{grid-column:span 3}header{padding-top:30px}.panel{padding:16px}.search button{flex:1}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.ember{display:none}}
+
+/* =========================================
+   3. CONFIGURAÇÕES GERAIS DA PÁGINA
+========================================= */
+
+[hidden] {
+    display: none !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    font: 17px 'IM Fell English', Georgia, serif;
+
+    background: radial-gradient(
+        ellipse at 50% 0%,
+        #383032 0%,
+        #171619 37%,
+        #09090b 85%
+    );
+
+    overflow-x: hidden;
+}
+
+body:before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+
+    box-shadow: inset 0 0 130px 30px #0008;
+
+    background: repeating-linear-gradient(
+        0deg,
+        #ffffff02 0 1px,
+        transparent 1px 4px
+    );
+}
+
+
+/* =========================================
+   4. EFEITO DE NÉVOA
+========================================= */
+
+.fog {
+    position: fixed;
+    inset: -35%;
+    pointer-events: none;
+    z-index: -1;
+
+    background:
+        radial-gradient(
+            ellipse at 20% 40%,
+            #a7a0a018,
+            transparent 48%
+        ),
+        radial-gradient(
+            ellipse at 75% 70%,
+            #80535b24,
+            transparent 42%
+        );
+
+    filter: blur(38px);
+
+    animation: fog 20s ease-in-out infinite alternate;
+}
+
+@keyframes fog {
+    to {
+        transform: translate(12%, 5%) scale(1.15);
+    }
+}
+
+
+/* =========================================
+   5. PARTÍCULAS FLUTUANTES
+========================================= */
+
+.ember {
+    position: fixed;
+    bottom: -10px;
+    left: var(--x);
+
+    width: 2px;
+    height: 3px;
+
+    background: #b96b55;
+    box-shadow: 0 0 7px #e57b60;
+
+    pointer-events: none;
+
+    animation: rise var(--t) linear infinite;
+    animation-delay: var(--d);
+
+    opacity: 0;
+    z-index: 0;
+}
+
+@keyframes rise {
+    20% {
+        opacity: .65;
+    }
+
+    80% {
+        opacity: .3;
+    }
+
+    100% {
+        transform: translate(50px, -105vh);
+        opacity: 0;
+    }
+}
+
+
+/* =========================================
+   6. CABEÇALHO
+========================================= */
+
+header {
+    text-align: center;
+    padding: 46px 20px 27px;
+    border-bottom: 1px solid #685a4555;
+    position: relative;
+}
+
+header:after {
+    content: '◆';
+    position: absolute;
+
+    bottom: -11px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    color: var(--gold);
+    background: #171619;
+
+    padding: 0 14px;
+    font-size: 14px;
+}
+
+.eyebrow {
+    font: 11px var(--serif);
+    letter-spacing: .48em;
+    color: var(--gold);
+    margin: 0 0 15px;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+}
+
+header h1 {
+    font-size: clamp(29px, 4.5vw, 58px);
+    letter-spacing: .08em;
+    margin: 0;
+
+    text-shadow:
+        0 3px 20px #000,
+        0 0 35px #a77c5940;
+}
+
+header p:last-child {
+    color: var(--muted);
+    font-style: italic;
+    margin: 12px 0 0;
+}
+
+
+/* =========================================
+   7. ESTRUTURA PRINCIPAL DO SITE
+========================================= */
+
+.layout {
+    max-width: 1600px;
+    margin: 32px auto 0;
+    padding: 0 32px;
+
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+
+    gap: 28px;
+    align-items: start;
+    position: relative;
+}
+
+main {
+    min-width: 0;
+    display: grid;
+    gap: 22px;
+}
+
+
+/* =========================================
+   8. PAINÉIS TEMÁTICOS
+========================================= */
+
+.panel {
+    position: relative;
+    border: 1px solid var(--line);
+
+    background: linear-gradient(
+        140deg,
+        #222123e8,
+        #101012ed
+    );
+
+    box-shadow:
+        0 8px 34px #0008,
+        inset 0 0 0 4px #1119,
+        inset 0 0 0 5px #b7a17a24;
+
+    padding: 24px;
+
+    animation: appear .7s ease both;
+}
+
+.panel:before,
+.panel:after {
+    content: '◆';
+    position: absolute;
+
+    font-size: 10px;
+    color: var(--gold);
+    line-height: 1;
+
+    background: #171619;
+
+    padding: 2px;
+    pointer-events: none;
+}
+
+.panel:before {
+    top: -6px;
+    left: -6px;
+}
+
+.panel:after {
+    bottom: -6px;
+    right: -6px;
+}
+
+
+/* Animação de aparecimento */
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
+/* =========================================
+   9. MENU LATERAL — STATUS E FRAQUEZAS
+========================================= */
+
+aside {
+    display: grid;
+    gap: 18px;
+
+    position: sticky;
+    top: 22px;
+}
+
+aside .panel {
+    padding: 18px;
+}
+
+aside h2 {
+    font-size: 13px;
+    letter-spacing: .17em;
+    color: var(--gold);
+
+    margin: 0 0 12px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #685a4577;
+}
+
+.legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.legend li {
+    padding: 8px 0;
+    border-bottom: 1px solid #ffffff09;
+    font-size: 16px;
+}
+
+.legend li:last-child {
+    border: 0;
+}
+
+.legend b {
+    display: inline-block;
+    width: 22px;
+
+    color: var(--gold);
+    font-weight: normal;
+    font-family: var(--serif);
+}
+
+.legend small {
+    color: var(--muted);
+}
+
+
+/* =========================================
+   10. TÍTULOS DAS SEÇÕES
+========================================= */
+
+.section-label {
+    font: 10px var(--serif);
+    letter-spacing: .28em;
+    color: var(--muted);
+    margin: 0 0 8px;
+}
+
+h2 {
+    font-size: 22px;
+    letter-spacing: .08em;
+    margin: 0 0 20px;
+    color: #dfd2bc;
+}
+
+
+/* =========================================
+   11. FORMULÁRIO DE CADASTRO E EDIÇÃO
+========================================= */
+
+.fields {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.field {
+    display: grid;
+    gap: 8px;
+    grid-column: span 2;
+}
+
+.field.wide {
+    grid-column: span 3;
+}
+
+label {
+    font: 11px var(--serif);
+    letter-spacing: .1em;
+    color: var(--gold);
+}
+
+input {
+    width: 100%;
+    min-width: 0;
+
+    border: 1px solid #665947;
+    background: #09090bd9;
+
+    color: var(--ink);
+    padding: 12px 13px;
+
+    font: 17px Georgia, serif;
+
+    border-radius: 0;
+    outline: none;
+
+    transition:
+        border-color .25s,
+        box-shadow .25s,
+        background .25s;
+}
+
+input:focus {
+    border-color: #c6b18a;
+    box-shadow: 0 0 15px #b7a17a22;
+    background: #1e191b;
+}
+
+input::placeholder {
+    color: #716a63;
+    font-style: italic;
+}
+
+
+/* =========================================
+   12. BOTÕES
+========================================= */
+
+.botoes {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+    align-items: center;
+}
+
+button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    cursor: pointer;
+    padding: 11px 20px;
+
+    border: 1px solid #8d7a59;
+    color: #e3d6bf;
+
+    background: linear-gradient(
+        #37302a,
+        #181719
+    );
+
+    font: 500 11px var(--serif);
+    letter-spacing: .08em;
+
+    transition:
+        background .25s,
+        border-color .25s,
+        box-shadow .25s,
+        transform .15s;
+
+    min-height: 39px;
+}
+
+
+/* Efeito ao passar o mouse */
+
+button:hover {
+    background: linear-gradient(
+        #554339,
+        #252023
+    );
+
+    border-color: #dfc9a0;
+    box-shadow: 0 0 20px #bd9b4f30;
+}
+
+
+/* Efeito de foco pelo teclado */
+
+button:focus-visible {
+    outline: 2px solid #d9c399;
+    outline-offset: 3px;
+}
+
+
+/* Efeito ao clicar */
+
+button:active {
+    transform: scale(.96);
+    box-shadow: 0 0 25px #a13a42aa;
+}
+
+
+/* Botão principal — Salvar */
+
+button.primary {
+    background: linear-gradient(
+        #54282e,
+        #29181d
+    );
+
+    border-color: #957061;
+}
+
+
+/* Botão de exclusão */
+
+button.danger {
+    border-color: #754248;
+    color: #d3a5a3;
+    background: #24171b;
+}
+
+
+/* Botão secundário — Limpar */
+
+button.quiet {
+    background: #121214;
+    color: #a69c8c;
+}
+
+
+/* =========================================
+   13. ANIMAÇÃO DE IMPACTO DOS BOTÕES
+========================================= */
+
+button .spark {
+    position: absolute;
+    z-index: -1;
+
+    left: 50%;
+    top: 50%;
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+    background: #f3d9ac88;
+
+    transform: translate(-50%, -50%);
+
+    animation: strike .55s ease-out forwards;
+
+    pointer-events: none;
+}
+
+@keyframes strike {
+    to {
+        width: 420px;
+        height: 420px;
+        opacity: 0;
+    }
+}
+
+
+/* =========================================
+   14. CAMPO DE PESQUISA
+========================================= */
+
+.search {
+    display: flex;
+    gap: 12px;
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.search label {
+    flex: 1;
+    min-width: 180px;
+
+    display: grid;
+    gap: 8px;
+}
+
+
+/* =========================================
+   15. PAINEL DO BESTIÁRIO
+========================================= */
+
+.archive {
+    overflow: hidden;
+    min-height: 360px;
+
+    background: linear-gradient(
+        120deg,
+        #161518e8,
+        #0c0c0ee8
+    );
+}
+
+
+/* =========================================
+   16. HUNTER'S MARK — MARCA-D'ÁGUA
+========================================= */
+
+.watermark {
+    position: absolute;
+
+    left: 50%;
+    top: 55%;
+
+    transform: translate(-50%, -50%);
+
+    width: min(250px, 55%);
+    height: 450px;
+
+    opacity: .15;
+    pointer-events: none;
+
+    filter: drop-shadow(0 0 16px #9c4d48);
+    color: #a16c60;
+}
+
+
+/* =========================================
+   17. CABEÇALHO DO BESTIÁRIO
+========================================= */
+
+.archive-head,
+.table-wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.archive-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+    flex-wrap: wrap;
+
+    margin-bottom: 14px;
+}
+
+.archive-head h2 {
+    margin: 0;
+}
+
+
+/* Contador de registros */
+
+.count {
+    font: 10px var(--serif);
+    letter-spacing: .13em;
+    color: var(--gold);
+
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+
+    padding: 8px;
+}
+
+
+/* =========================================
+   18. TABELA DE REGISTROS
+========================================= */
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 750px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 15px 12px;
+    border-bottom: 1px solid #685a4550;
+}
+
+
+/* Cabeçalho das colunas */
+
+th {
+    font: 11px var(--serif);
+    letter-spacing: .1em;
+    color: var(--gold);
+
+    background: #222024b0;
+
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+
+/* Células da tabela */
+
+td {
+    font-size: 17px;
+    background: #0e0e1020;
+}
+
+
+/* Coluna de identificação */
+
+td:first-child {
+    color: #9e8a6c;
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* Animação das linhas */
+
+tbody tr {
+    transition:
+        background .25s,
+        box-shadow .25s;
+
+    animation: appear .45s both;
+    animation-delay: var(--delay, 0ms);
+}
+
+
+/* Destaque ao passar o mouse */
+
+tbody tr:hover {
+    background: linear-gradient(
+        90deg,
+        #a9915529,
+        #62333d24,
+        transparent
+    );
+
+    box-shadow: inset 2px 0 #b7a17a;
+}
+
+
+/* Destaque do registro em edição */
+
+tbody tr.selected {
+    background: #713b433f;
+    box-shadow: inset 3px 0 #bd9c78;
+}
+
+
+/* =========================================
+   19. BOTÕES DE AÇÃO DA TABELA
+========================================= */
+
+.actions {
+    display: flex;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.actions button {
+    padding: 8px 10px;
+    font-size: 10px;
+}
+
+
+/* =========================================
+   20. INDICADORES DE STATUS
+========================================= */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 15px;
+}
+
+
+/* Indicador de criatura derrotada */
+
+.status:before {
+    content: '◆';
+    font-size: 8px;
+    color: #b5a487;
+}
+
+
+/* Indicador de criatura não derrotada */
+
+.status.alive:before {
+    color: #b9595c;
+    filter: drop-shadow(0 0 4px #b9595c);
+}
+
+
+/* =========================================
+   21. TABELA SEM REGISTROS
+========================================= */
+
+.empty {
+    text-align: center;
+    padding: 42px;
+    color: var(--muted);
+}
+
+
+/* =========================================
+   22. MENSAGENS DE CONFIRMAÇÃO E ERRO
+========================================= */
+
+#mensagem:empty {
+    display: none;
+}
+
+#mensagem {
+    position: fixed;
+    z-index: 10;
+
+    right: 25px;
+    bottom: 25px;
+
+    max-width: min(420px, calc(100vw - 50px));
+
+    border: 1px solid var(--gold);
+    background: #191719f5;
+
+    padding: 18px 24px;
+
+    box-shadow: 0 8px 35px #000b;
+
+    font-size: 18px;
+
+    animation: appear .3s both;
+}
+
+#mensagem.error {
+    border-color: #ab5259;
+    color: #e3a4a4;
+}
+
+
+/* =========================================
+   23. RODAPÉ
+========================================= */
+
+footer {
+    text-align: center;
+    padding: 36px 15px;
+
+    color: #817467;
+    font-style: italic;
+    font-size: 30px;
+}
+
+
+/* =========================================
+   24. JANELA DE CONFIRMAÇÃO DE EXCLUSÃO
+========================================= */
+
+dialog {
+    width: min(470px, 90vw);
+
+    color: var(--ink);
+    border: 1px solid var(--gold);
+
+    background: linear-gradient(
+        #252023,
+        #111013
+    );
+
+    padding: 30px;
+
+    box-shadow: 0 0 70px #000;
+
+    text-align: center;
+}
+
+
+/* Animação de abertura da janela */
+
+dialog[open] {
+    animation: appear .25s both;
+}
+
+
+/* Escurecimento do fundo */
+
+dialog::backdrop {
+    background: #000b;
+    backdrop-filter: blur(4px);
+}
+
+dialog h2 {
+    margin-bottom: 12px;
+}
+
+dialog .botoes {
+    justify-content: center;
+}
+
+
+/* =========================================
+   25. DESTAQUE DO FORMULÁRIO EM EDIÇÃO
+========================================= */
+
+.editing {
+    border-color: #b69a70;
+    box-shadow: 0 0 26px #9e715824;
+}
+
+
+/* =========================================
+   26. RESPONSIVIDADE — TELAS MÉDIAS
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .layout {
+        grid-template-columns: 180px minmax(0, 1fr);
+        padding: 0 20px;
+        gap: 18px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+}
+
+
+/* =========================================
+   27. RESPONSIVIDADE — TELAS PEQUENAS
+========================================= */
+
+@media (max-width: 730px) {
+
+    .layout {
+        grid-template-columns: 1fr;
+        padding: 0 14px;
+    }
+
+    aside {
+        position: static;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .field,
+    .field.wide {
+        grid-column: span 3;
+    }
+
+    header {
+        padding-top: 30px;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+
+    .search button {
+        flex: 1;
+    }
+
+}
+
+
+/* =========================================
+   28. ACESSIBILIDADE — REDUÇÃO DE ANIMAÇÕES
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *:before,
+    *:after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+
+    .ember {
+        display: none;
+    }
+
+}
