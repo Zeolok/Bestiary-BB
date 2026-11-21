@@ -1,16 +1,25 @@
 let timerMensagem;
+let timerFadeout;
 
 function mostrarMensagem(texto, erro = false) {
     const area = document.getElementById('mensagem');
 
+    clearTimeout(timerMensagem);
+    clearTimeout(timerFadeout);
+
     area.textContent = texto;
     area.classList.toggle('error', erro);
-
-    clearTimeout(timerMensagem);
+    area.style.opacity = '1';
 
     timerMensagem = setTimeout(() => {
-        area.textContent = '';
-    }, 6500);
+
+        area.style.opacity = '0';
+
+        timerFadeout = setTimeout(() => {
+            area.textContent = '';
+        }, 1500);
+
+    }, 5000);
 }
 
 const listaBestiario = Array.from(
