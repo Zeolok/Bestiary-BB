@@ -20,11 +20,11 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 4. Crie e configure as variáveis do arquivo `.env` na raiz do projeto:
 
 `.env.example`
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD= [sua_senha]
-DB_NAME=bdnode
-PORT=3000
+- DB_HOST=localhost
+- DB_USER=root
+- DB_PASSWORD= [sua_senha]
+- DB_NAME=bdnode
+- PORT=3000
 
 5. Configure o banco de dados MySQL.
 6. Crie as tabelas e insira os atributos para preencher as colunas.
