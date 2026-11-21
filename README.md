@@ -19,10 +19,10 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 3. Utilize o MySQL Workbench para criar o banco de dados `bdnode`.
 4. Crie e configure as variáveis do arquivo `.env` na raiz do projeto:
 
-`.env.example`
+`.env`
 - DB_HOST=localhost
 - DB_USER=root
-- DB_PASSWORD= [sua_senha]
+- DB_PASSWORD=[sua_senha]
 - DB_NAME=bdnode
 - PORT=3000
 
