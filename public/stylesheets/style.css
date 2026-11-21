@@ -194,7 +194,7 @@ header h1 {
 
 header p:last-child {
     color: var(--muted);
-    font-style: italic;
+    font-size: 30px;
     margin: 12px 0 0;
 }
 
@@ -295,9 +295,9 @@ main {
 aside {
     display: grid;
     gap: 18px;
-
     position: sticky;
     top: 22px;
+    transform: translateX(-35px);
 }
 
 aside .panel {
@@ -676,6 +676,16 @@ td {
     border-bottom: 1px solid #685a4550;
 }
 
+td:first-child {
+    color: #9e8a6c;
+    font-variant-numeric: tabular-nums;
+    font-size: 25px;
+}
+
+td:nth-child(4) {
+    font-size: 25px;
+}
+
 
 /* Cabeçalho das colunas */
 
@@ -842,7 +852,6 @@ footer {
     padding: 36px 15px;
 
     color: #817467;
-    font-style: italic;
     font-size: 30px;
 }
 
@@ -937,6 +946,7 @@ dialog .botoes {
         position: static;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
+        transform: none;
     }
 
     .field,
