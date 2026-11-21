@@ -1,180 +1,73 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8">
-    <title>Arquivo dos Caçadores</title>
 
-    <style>
-      body { font-family: Arial, sans-serif; margin: 40px; }
-      table { border-collapse: collapse; width: 100%; }
-      th, td { border: 3px solid #ccc; padding: 10px; text-align: center; }
-      th { background: #f0f0f0; }
-    </style>
-  </head>
-  <body>
-    
-    <h1>REGISTRO DE CAÇADA - BESTIÁRIO</h1>
-    <div id="mensagem"></div>
+<head>
 
-    <h2 id="titulo-form">Novo registro</h2>
-    <form id="form-registro">
-      <input type="hidden" id="id_criatura">
-      <label>Nome <input type="text" id="nome" required></label>
-      <label>Localização <input type="text" id="localizacao" required></label>
-      <label>Ecos <input type="number" id="ecos" required></label>
-      <label>Fraqueza <input type="number" id="id_fraqueza" required></label>
-      <label>Status <input type="number" id="id_status" required></label>
-      <div class="botoes">
-        <button type="submit" id="btn-salvar">Salvar</button>
-      </div>
-    </form>
+<meta charset="utf-8">
 
-    <h2>Pesquisar registro</h2>
-    <form id="form-pesquisa" onsubmit="pesquisar(event)">
-      <label>Nome
-        <input type="text" id="pesquisa">
-      </label>
-      <button type="submit">Pesquisar</button>
-      <button type="button" onclick="limparPesquisa()">
-        Limpar
-      </button>
-    </form>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <h1>Lista de Registros</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Localização</th>
-          <th>Ecos</th>
-          <th>Fraqueza</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody id="bestiario"></tbody>
-    </table>
+<title>Arquivo dos Caçadores</title>
 
-    <script>
+<link rel="stylesheet" href="/stylesheets/style.css">
 
-      async function carregarRegistro() {
-        const tbody = document.getElementById('bestiario');
-        const pesquisa = document.getElementById('pesquisa').value;
+</head>
 
-        try {
-          const resposta = await fetch('/api/registros?pesquisa=' + encodeURIComponent(pesquisa));
-          const registros = await resposta.json();
+<body>
 
-          if (!resposta.ok) {
-            throw new Error(registros.erro);
-          }
+<div class="fog" aria-hidden="true"></div><div id="embers" aria-hidden="true"></div>
 
-          listaBestiario = registros;
+<header><p class="eyebrow">Yharnam • Arquivo da Oficina</p><h1>BESTIÁRIO</h1><p>Registro de Caçada</p></header>
 
-          if (registros.length === 0) {
-            tbody.innerHTML =
-              '<tr><td colspan="7">Nenhum registro encontrado.</td></tr>';
-            return;
-          }
+<div class="layout">
 
-          tbody.innerHTML = registros.map(b => `
-            <tr>
-              <td>${b.id_criatura}</td>
-              <td>${b.nome_besta}</td>
-              <td>${b.localizacao}</td>
-              <td>${b.ecos}</td>
-              <td>${b.nome_fraqueza}</td>
-              <td>${b.nome_status}</td>
-              <td><button onclick="editarRegistro(${b.id_criatura})">Editar</button> <button onclick="deletarRegistro(${b.id_criatura})">Deletar</button></td>
-            </tr>`).join('');
+<aside aria-label="Códigos de referência">
 
-        } catch (erro) {
-          tbody.innerHTML = `<tr><td colspan="7">${erro.message}</td></tr>`;
-        }
-      }
+<section class="panel"><h2>Status da criatura</h2><ul class="legend"><li><b>1</b> Derrotado(a)</li><li><b>2</b> Não Derrotado(a)</li></ul></section>
 
-      let listaBestiario = [];
+<section class="panel"><h2>Fraquezas</h2><ul class="legend"><li><b>1</b> Físico</li><li><b>2</b> Cortante</li><li><b>3</b> Arcano</li><li><b>4</b> Fogo</li><li><b>5</b> Elétrico</li></ul></section>
 
-      carregarRegistro();
+</aside>
 
-      function editarRegistro(id) {
-        const b = listaBestiario.find(bestiario => bestiario.id_criatura == id);
+<main>
 
-        document.getElementById('id_criatura').value = b.id_criatura;
-        document.getElementById('nome').value = b.nome_besta;
-        document.getElementById('localizacao').value = b.localizacao;
-        document.getElementById('ecos').value = b.ecos;
-        document.getElementById('id_fraqueza').value = b.id_fraqueza;
-        document.getElementById('id_status').value = b.id_status;
-        window.scrollTo(0, 0);
-      }
+<section class="panel" id="editor"><p class="section-label">I — Anotações da caçada</p><h2 id="titulo-form">Novo registro</h2>
 
-      async function deletarRegistro(id) {
-        if (!confirm('Deseja realmente deletar este registro?')){
-          return;
-        }
+<form id="form-registro"><input type="hidden" id="id_criatura"><div class="fields">
 
-        const resposta = await fetch(`/api/registros/${id}`, {
-          method: "DELETE"
-        });
-        const resultado = await resposta.json();
+<label class="field wide">Nome<input type="text" id="nome" placeholder="Nome da criatura" required></label>
 
-        if (resposta.ok) {
-          alert("Registro excluído!");
-          carregarRegistro();
-        } 
-        
-        else {
-          alert("Erro ao excluir registro.");
-        }
-      }
+<label class="field wide">Localização<input type="text" id="localizacao" placeholder="Região de Yharnam" required></label>
 
-      function pesquisar(evento) {
-        evento.preventDefault();
-        carregarRegistro();
-      }
+<label class="field">Quantidade de Ecos Sangrentos<input type="number" id="ecos" placeholder="0" required></label>
 
-      function limparPesquisa() {
-        document.getElementById('pesquisa').value = '';
-        carregarRegistro();
-      }
+<label class="field">Fraqueza<input type="number" id="id_fraqueza" placeholder="1–5" required></label>
 
-      document.getElementById('form-registro').addEventListener('submit', async (evento) => {
-        evento.preventDefault();
+<label class="field">Status<input type="number" id="id_status" placeholder="1–2" required></label>
 
-        const id = document.getElementById('id_criatura').value;
+</div><div class="botoes"><button class="primary" type="submit" id="btn-salvar">◆ Salvar registro</button></div></form></section>
 
-        const bestiario = {
-          nome: document.getElementById('nome').value,
-          localizacao: document.getElementById('localizacao').value,
-          ecos: document.getElementById('ecos').value,
-          id_fraqueza: document.getElementById('id_fraqueza').value,
-          id_status: document.getElementById('id_status').value,
-        };
+<section class="panel"><p class="section-label">II — Investigação</p><h2>Pesquisar registro</h2><form id="form-pesquisa" class="search" onsubmit="pesquisar(event)"><label>Nome ou localização<input type="text" id="pesquisa" placeholder="Investigue os registros..."></label><button type="submit">Pesquisar</button><button type="button" class="quiet" onclick="limparPesquisa()">Limpar</button></form></section>
 
-        const metodo = id ? 'PUT' : 'POST';
-        const endereco = id ? '/api/registros/' + id : '/api/registros';
+<section class="panel archive">
 
-        const resposta = await fetch(endereco, {
-          method: metodo,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bestiario)
-        });
+<img class="watermark" src="/images/hunters-mark.png" alt="" aria-hidden="true">
 
-        const resultado = await resposta.json();
+<div class="archive-head"><div><p class="section-label">III — Registros preservados</p><h2>Bestiário</h2></div><span class="count" id="contador">Consultando arquivo</span></div>
 
-        document.getElementById('mensagem').textContent =
-          resultado.mensagem ?? resultado.erro;
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Nome</th><th>Localização</th><th>Ecos</th><th>Fraqueza</th><th>Status</th><th>Ações</th></tr></thead><tbody id="bestiario"><tr><td class="empty" colspan="7">Consultando os registros...</td></tr></tbody></table></div></section>
 
-        if (resposta.ok) {
-          document.getElementById('form-registro').reset();
-          document.getElementById('id_criatura').value = '';
-          document.getElementById('titulo-form').textContent = 'Novo registro';
-          carregarRegistro();
-        }
-    });
-    </script>
+</main></div>
 
-  </body>
+<footer>◆ &nbsp; A hunter is a hunter, even in a dream. &nbsp; ◆</footer>
+
+<div id="mensagem" role="status" aria-live="polite"></div>
+
+<dialog id="confirmacao"><h2>Apagar registro?</h2><p>O registro será removido permanentemente do bestiário, bom caçador.</p><form method="dialog" class="botoes"><button value="cancelar" autofocus>Cancelar</button><button value="confirmar" class="danger">Apagar registro</button></form></dialog>
+
+<script src="/javascripts/bestiario.js"></script>
+
+</body>
+
 </html>
