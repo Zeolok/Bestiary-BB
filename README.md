@@ -3,7 +3,7 @@
 ## Tema escolhido
 
 Sistema de gerenciamento de criaturas inspirado no universo
-de Bloodborne (video-jogo), desenvolvido para fins acadêmicos.
+de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 
 ## Como executar
 
