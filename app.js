@@ -27,14 +27,45 @@ app.get('/fibbauru', (req, res) => {
 res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/cadastro', async (req, res) => {
-  try {
-    const [rows] = await db.query('SELECT * FROM aluno');
-    res.render('aluno', { alunos: rows});
-  } catch (error) {
-    console.error('Erro ao buscar alunos:', error);
-    res.status(500).send('Erro interno no servidor.');
-  }
+app.get('/api/alunos', async (req, res) => {
+    try {
+        let sql = `
+            SELECT
+                a.id_aluno,
+                a.matricula,
+                a.nome AS nome_aluno,
+                a.cpf,
+                a.celular,
+                a.id_curso,
+                c.nome_curso
+            FROM aluno a, curso c
+            WHERE a.id_curso = c.id_curso
+        `;
+
+        const parametros = [];
+
+        if (req.query.pesquisa) {
+            sql += ` AND (a.nome LIKE ? OR a.matricula LIKE ?)`;
+
+            parametros.push(
+                '%' + req.query.pesquisa + '%',
+                '%' + req.query.pesquisa + '%'
+            );
+        }
+
+        sql += ' ORDER BY a.nome';
+
+        const [rows] = await db.query(sql, parametros);
+
+        res.json(rows);
+
+    } catch (err) {
+        console.error(err);
+
+        res.status(500).json({
+            erro: 'Erro ao buscar alunos: ' + err.message
+        });
+    }
 });
 
 // catch 404 and forward to error handler
