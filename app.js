@@ -36,6 +36,7 @@ app.get('/api/registros', async (req, res) => {
                 b.localizacao,
                 b.ecos,
                 b.id_fraqueza,
+                b.id_status,
                 e.nome_fraqueza,
                 s.nome_status
             FROM bestiario b, estatistica e, statuscriatura s
@@ -106,7 +107,7 @@ app.put('/api/registros/:id', async (req, res) => {
 
         const { nome, localizacao, ecos, id_fraqueza, id_status } = req.body;
 
-        if (!nome || !localizacao || !ecos || !id_fraqueza || !id_status) {
+        if (!nome || !localizacao || ecos == null || ecos === '' || !id_fraqueza || !id_status) {
             return res.status(400).json({
                 erro: 'Preencha todos os campos.'
             });
@@ -120,7 +121,7 @@ app.put('/api/registros/:id', async (req, res) => {
                  id_fraqueza = ?,
                  id_status = ?
              WHERE id_criatura = ?`,
-            [nome, localizacao, ecos || id_fraqueza, id_status, id]
+            [nome, localizacao, ecos, id_fraqueza, id_status, id]
         );
 
         if (resultado.affectedRows === 0) {

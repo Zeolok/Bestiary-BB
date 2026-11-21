@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>Arquivo dos Caçadores</title>
-    <h1>REGISTRO DE CAÇADA - BESTIÁRIO</h1>
 
     <style>
       body { font-family: Arial, sans-serif; margin: 40px; }
@@ -13,7 +12,8 @@
     </style>
   </head>
   <body>
-
+    
+    <h1>REGISTRO DE CAÇADA - BESTIÁRIO</h1>
     <div id="mensagem"></div>
 
     <h2 id="titulo-form">Novo registro</h2>
@@ -74,7 +74,7 @@
 
           if (registros.length === 0) {
             tbody.innerHTML =
-              '<tr><td colspan="8">Nenhum registro encontrado.</td></tr>';
+              '<tr><td colspan="7">Nenhum registro encontrado.</td></tr>';
             return;
           }
 
@@ -86,11 +86,11 @@
               <td>${b.ecos}</td>
               <td>${b.nome_fraqueza}</td>
               <td>${b.nome_status}</td>
-              <td><button onclick="editarAluno(${b.id_criatura})">Editar</button> <button onclick="deletarRegistro(${b.id_criatura})">Deletar</button></td>
+              <td><button onclick="editarRegistro(${b.id_criatura})">Editar</button> <button onclick="deletarRegistro(${b.id_criatura})">Deletar</button></td>
             </tr>`).join('');
 
         } catch (erro) {
-          tbody.innerHTML = `<tr><td colspan="8">${erro.message}</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="7">${erro.message}</td></tr>`;
         }
       }
 
@@ -99,14 +99,14 @@
       carregarRegistro();
 
       function editarRegistro(id) {
-        const a = listaBestiario.find(bestiario => bestiario.id_criatura == id);
+        const b = listaBestiario.find(bestiario => bestiario.id_criatura == id);
 
         document.getElementById('id_criatura').value = b.id_criatura;
         document.getElementById('nome').value = b.nome_besta;
         document.getElementById('localizacao').value = b.localizacao;
         document.getElementById('ecos').value = b.ecos;
         document.getElementById('id_fraqueza').value = b.id_fraqueza;
-        document.getElementById('id_status').value = b.id_fraqueza;
+        document.getElementById('id_status').value = b.id_status;
         window.scrollTo(0, 0);
       }
 
