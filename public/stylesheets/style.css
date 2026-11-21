@@ -882,6 +882,7 @@ footer {
 
     color: #817467;
     font-size: 30px;
+    transform: translateX(-40px);
 }
 
 
