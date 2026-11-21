@@ -14,7 +14,7 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 - MySQL Workbench
 - Git ou GitHub Desktop
 
-1. Clone o repositório.
+1. Baixe o zip do código fonte nos lançamentos.
 2. Abra a pasta do projeto no Visual Studio Code.
 3. Execute `npm install` no terminal.
 4. Execute o arquivo script.sql no MySQL Workbench para criar o banco de dados, as tabelas e os registros iniciais.
