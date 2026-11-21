@@ -35,7 +35,7 @@ CREATE TABLE bestiario (
 INSERT INTO bestiario (nome, localizacao, ecos, id_fraqueza, id_status) VALUES
 ('Besta Clerical', 'Yharnam Central (Grande Ponte)', 4000, 4, 1),
 ('Paarl, Fera Negra', 'Antiga Yharnam', 4500, 3, 2),
-('Ebrietas', 'Altar do Desespero', 12000, 5, 1),
+('Ebrietas, Filha dos Cosmos', 'Altar do Desespero', 12000, 5, 1),
 ('Mártir Logarius', 'Castelo Cainhurst Abandonado', 25000, 1, 1),
 ('Orfão de Kos', 'Litoral', 30000, 2, 2);
 SELECT * FROM bestiario;

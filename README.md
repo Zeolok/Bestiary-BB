@@ -15,9 +15,11 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 - Git ou GitHub Desktop
 
 1. Clone o repositório.
-2. Execute `npm install`.
-3. Utilize o MySQL Workbench para criar o banco de dados `bdnode`.
-4. Crie e configure as variáveis do arquivo `.env` na raiz do projeto:
+2. Abra a pasta do projeto no Visual Studio Code.
+3. Execute `npm install` no terminal.
+4. Execute o arquivo script.sql no MySQL Workbench para criar o banco de dados, as tabelas e os registros iniciais.
+5. Crie um arquivo .env na raiz do projeto utilizando o .env.example como modelo.
+6. Configure as variáveis de ambiente conforme suas credenciais do MySQL:
 
 `.env`
 - DB_HOST=localhost
@@ -26,9 +28,8 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 - DB_NAME=bdnode
 - PORT=3000
 
-5. Configure o banco de dados MySQL.
-6. Execute o arquivo `script.sql` no MySQL Workbench para criar o banco de dados, as tabelas e inserir os registros iniciais.
 7. Execute `npm start` no terminal do VS Code.
+8. Acesse https://localhost:3000 no navegador.
 
 ## Nome do Integrante [Individual]
 
