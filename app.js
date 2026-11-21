@@ -68,6 +68,108 @@ app.get('/api/alunos', async (req, res) => {
     }
 });
 
+app.post('/api/alunos', async (req, res) => {
+    try {
+        const { matricula, nome, cpf, celular, id_curso } = req.body;
+
+        const sql = `
+            INSERT INTO aluno
+            (matricula, nome, cpf, celular, id_curso)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+
+        const [resultado] = await db.query(sql, [
+            matricula,
+            nome,
+            cpf,
+            celular || null,
+            id_curso
+        ]);
+
+        res.status(201).json({
+            mensagem: 'Aluno cadastrado com sucesso!',
+            id_aluno: resultado.insertId
+        });
+
+    } catch (erro) {
+        console.error('Erro ao cadastrar aluno:', erro);
+
+        res.status(500).json({
+            erro: 'Erro ao cadastrar aluno.'
+        });
+    }
+});
+
+app.put('/api/alunos/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const { matricula, nome, cpf, celular, id_curso } = req.body;
+
+        if (!matricula || !nome || !cpf || !id_curso) {
+            return res.status(400).json({
+                erro: 'Preencha matrícula, nome, CPF e curso.'
+            });
+        }
+
+        const [resultado] = await db.query(
+            `UPDATE aluno
+             SET matricula = ?,
+                 nome = ?,
+                 cpf = ?,
+                 celular = ?,
+                 id_curso = ?
+             WHERE id_aluno = ?`,
+            [matricula, nome, cpf, celular || null, id_curso, id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({
+                erro: 'Aluno não encontrado.'
+            });
+        }
+
+        res.json({
+            mensagem: 'Aluno atualizado com sucesso!'
+        });
+
+    } catch (erro) {
+        console.error('Erro ao atualizar aluno:', erro);
+
+        res.status(500).json({
+            erro: 'Erro ao atualizar aluno.'
+        });
+    }
+});
+
+app.delete('/api/alunos/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const [resultado] = await db.query(
+            'DELETE FROM aluno WHERE id_aluno = ?',
+            [id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({
+                erro: 'Aluno não encontrado.'
+            });
+        }
+
+        res.json({
+            mensagem: 'Aluno deletado com sucesso!'
+        });
+
+    } catch (erro) {
+        console.error('Erro ao deletar aluno:', erro);
+
+        res.status(500).json({
+            erro: 'Erro ao deletar aluno.'
+        });
+    }
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
