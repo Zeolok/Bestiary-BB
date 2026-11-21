@@ -227,3 +227,23 @@ sessionStorage.removeItem('mensagemBestiario');
 if (mensagemInicial) {
     mostrarMensagem(mensagemInicial);
 }
+
+function criarEmbers() {
+    const container = document.getElementById('embers');
+
+    for (let i = 0; i < 35; i++) {
+        const ember = document.createElement('span');
+
+        ember.classList.add('ember');
+
+        ember.style.setProperty('--x', Math.random() * 100 + 'vw');
+
+        ember.style.setProperty('--t', 8 + Math.random() * 12 + 's');
+
+        ember.style.setProperty('--d', -Math.random() * 20 + 's');
+
+        container.appendChild(ember);
+    }
+}
+
+criarEmbers();

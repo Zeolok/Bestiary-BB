@@ -94,18 +94,19 @@ body:before {
 .fog {
     position: fixed;
     inset: -35%;
+
     pointer-events: none;
     z-index: -1;
 
     background:
         radial-gradient(
             ellipse at 20% 40%,
-            #a7a0a018,
+            #a7a0a045,
             transparent 48%
         ),
         radial-gradient(
             ellipse at 75% 70%,
-            #80535b24,
+            #80535b40,
             transparent 42%
         );
 
@@ -115,6 +116,10 @@ body:before {
 }
 
 @keyframes fog {
+    from {
+        transform: translate(-8%, -5%) scale(1);
+    }
+
     to {
         transform: translate(12%, 5%) scale(1.15);
     }
@@ -235,6 +240,7 @@ header p:last-child {
     gap: 28px;
     align-items: start;
     position: relative;
+    transform: translateX(-80px);
 }
 
 main {
@@ -624,7 +630,7 @@ button .spark {
 
     transform: translate(-50%, -50%);
 
-    width: min(250px, 55%);
+    width: min(450px, 55%);
     height: 450px;
 
     opacity: .15;
@@ -945,6 +951,7 @@ dialog .botoes {
         grid-template-columns: 180px minmax(0, 1fr);
         padding: 0 20px;
         gap: 18px;
+        transform: none;
     }
 
     .panel {
