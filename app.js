@@ -27,25 +27,25 @@ app.get('/fibbauru', (req, res) => {
 res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/api/alunos', async (req, res) => {
+app.get('/api/registros', async (req, res) => {
     try {
         let sql = `
             SELECT
-                a.id_aluno,
-                a.matricula,
-                a.nome AS nome_aluno,
-                a.cpf,
-                a.celular,
-                a.id_curso,
-                c.nome_curso
-            FROM aluno a, curso c
-            WHERE a.id_curso = c.id_curso
+                b.id_criatura,
+                b.nome AS nome_besta,
+                b.localizacao,
+                b.ecos,
+                b.id_fraqueza,
+                e.nome_fraqueza,
+                s.nome_status
+            FROM bestiario b, estatistica e, statuscriatura s
+            WHERE b.id_fraqueza = e.id_fraqueza AND b.id_status = s.id_status
         `;
 
         const parametros = [];
 
         if (req.query.pesquisa) {
-            sql += ` AND (a.nome LIKE ? OR a.matricula LIKE ?)`;
+            sql += ` AND (b.nome LIKE ? OR b.localizacao LIKE ?)`;
 
             parametros.push(
                 '%' + req.query.pesquisa + '%',
@@ -53,7 +53,7 @@ app.get('/api/alunos', async (req, res) => {
             );
         }
 
-        sql += ' ORDER BY a.nome';
+        sql += ' ORDER BY b.ecos';
 
         const [rows] = await db.query(sql, parametros);
 
@@ -63,109 +63,109 @@ app.get('/api/alunos', async (req, res) => {
         console.error(err);
 
         res.status(500).json({
-            erro: 'Erro ao buscar alunos: ' + err.message
+            erro: 'Erro ao buscar registro: ' + err.message
         });
     }
 });
 
-app.post('/api/alunos', async (req, res) => {
+app.post('/api/registros', async (req, res) => {
     try {
-        const { matricula, nome, cpf, celular, id_curso } = req.body;
+        const { nome, localizacao, ecos, id_fraqueza, id_status } = req.body;
 
         const sql = `
-            INSERT INTO aluno
-            (matricula, nome, cpf, celular, id_curso)
+            INSERT INTO bestiario
+            (nome, localizacao, ecos, id_fraqueza, id_status)
             VALUES (?, ?, ?, ?, ?)
         `;
 
         const [resultado] = await db.query(sql, [
-            matricula,
             nome,
-            cpf,
-            celular || null,
-            id_curso
+            localizacao,
+            ecos,
+            id_fraqueza,
+            id_status
         ]);
 
         res.status(201).json({
-            mensagem: 'Aluno cadastrado com sucesso!',
-            id_aluno: resultado.insertId
+            mensagem: 'Registrado com sucesso, bom caçador.',
+            id_criatura: resultado.insertId
         });
 
     } catch (erro) {
-        console.error('Erro ao cadastrar aluno:', erro);
+        console.error('Erro ao registrar criatura:', erro);
 
         res.status(500).json({
-            erro: 'Erro ao cadastrar aluno.'
+            erro: 'Erro ao registrar criatura.'
         });
     }
 });
 
-app.put('/api/alunos/:id', async (req, res) => {
+app.put('/api/registros/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
-        const { matricula, nome, cpf, celular, id_curso } = req.body;
+        const { nome, localizacao, ecos, id_fraqueza, id_status } = req.body;
 
-        if (!matricula || !nome || !cpf || !id_curso) {
+        if (!nome || !localizacao || !ecos || !id_fraqueza || !id_status) {
             return res.status(400).json({
-                erro: 'Preencha matrícula, nome, CPF e curso.'
+                erro: 'Preencha todos os campos.'
             });
         }
 
         const [resultado] = await db.query(
-            `UPDATE aluno
-             SET matricula = ?,
-                 nome = ?,
-                 cpf = ?,
-                 celular = ?,
-                 id_curso = ?
-             WHERE id_aluno = ?`,
-            [matricula, nome, cpf, celular || null, id_curso, id]
+            `UPDATE bestiario
+             SET nome = ?,
+                 localizacao = ?,
+                 ecos = ?,
+                 id_fraqueza = ?,
+                 id_status = ?
+             WHERE id_criatura = ?`,
+            [nome, localizacao, ecos || id_fraqueza, id_status, id]
         );
 
         if (resultado.affectedRows === 0) {
             return res.status(404).json({
-                erro: 'Aluno não encontrado.'
+                erro: 'Registro não encontrado.'
             });
         }
 
         res.json({
-            mensagem: 'Aluno atualizado com sucesso!'
+            mensagem: 'Registro atualizado com sucesso, bom caçador.'
         });
 
     } catch (erro) {
-        console.error('Erro ao atualizar aluno:', erro);
+        console.error('Erro ao atualizar registro:', erro);
 
         res.status(500).json({
-            erro: 'Erro ao atualizar aluno.'
+            erro: 'Erro ao atualizar registro.'
         });
     }
 });
 
-app.delete('/api/alunos/:id', async (req, res) => {
+app.delete('/api/registros/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
         const [resultado] = await db.query(
-            'DELETE FROM aluno WHERE id_aluno = ?',
+            'DELETE FROM bestiario WHERE id_criatura = ?',
             [id]
         );
 
         if (resultado.affectedRows === 0) {
             return res.status(404).json({
-                erro: 'Aluno não encontrado.'
+                erro: 'Registro não encontrado.'
             });
         }
 
         res.json({
-            mensagem: 'Aluno deletado com sucesso!'
+            mensagem: 'Registro deletado com sucesso, bom caçador.'
         });
 
     } catch (erro) {
-        console.error('Erro ao deletar aluno:', erro);
+        console.error('Erro ao deletar registro:', erro);
 
         res.status(500).json({
-            erro: 'Erro ao deletar aluno.'
+            erro: 'Erro ao deletar registro.'
         });
     }
 });

@@ -2,7 +2,8 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
-    <title>Lista de Alunos na disciplina de Linguagem de Programação I</title>
+    <title>Arquivo dos Caçadores</title>
+    <h1>REGISTRO DE CAÇADA - BESTIÁRIO</h1>
 
     <style>
       body { font-family: Arial, sans-serif; margin: 40px; }
@@ -15,22 +16,22 @@
 
     <div id="mensagem"></div>
 
-    <h2 id="titulo-form">Novo aluno</h2>
-    <form id="form-aluno">
-      <input type="hidden" id="id_aluno">
-      <label>Matrícula <input type="text" id="matricula" required></label>
+    <h2 id="titulo-form">Novo registro</h2>
+    <form id="form-registro">
+      <input type="hidden" id="id_criatura">
       <label>Nome <input type="text" id="nome" required></label>
-      <label>CPF <input type="text" id="cpf" required></label>
-      <label>Celular <input type="text" id="celular" required></label>
-      <label>Código do Curso <input type="number" id="id_curso" required></label>
+      <label>Localização <input type="text" id="localizacao" required></label>
+      <label>Ecos <input type="number" id="ecos" required></label>
+      <label>Fraqueza <input type="number" id="id_fraqueza" required></label>
+      <label>Status <input type="number" id="id_status" required></label>
       <div class="botoes">
         <button type="submit" id="btn-salvar">Salvar</button>
       </div>
     </form>
 
-    <h2>Pesquisar aluno</h2>
+    <h2>Pesquisar registro</h2>
     <form id="form-pesquisa" onsubmit="pesquisar(event)">
-      <label>Nome ou mátricula
+      <label>Nome
         <input type="text" id="pesquisa">
       </label>
       <button type="submit">Pesquisar</button>
@@ -39,55 +40,53 @@
       </button>
     </form>
 
-    <h1>Lista de Alunos</h1>
+    <h1>Lista de Registros</h1>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Matrícula</th>
           <th>Nome</th>
-          <th>CPF</th>
-          <th>Celular</th>
-          <th>Codigo Curso</th>
-          <th>Curso</th>
+          <th>Localização</th>
+          <th>Ecos</th>
+          <th>Fraqueza</th>
+          <th>Status</th>
           <th>Ações</th>
         </tr>
       </thead>
-      <tbody id="tabela-alunos"></tbody>
+      <tbody id="bestiario"></tbody>
     </table>
 
     <script>
 
-      async function carregarAlunos() {
-        const tbody = document.getElementById('tabela-alunos');
+      async function carregarRegistro() {
+        const tbody = document.getElementById('bestiario');
         const pesquisa = document.getElementById('pesquisa').value;
 
         try {
-          const resposta = await fetch('/api/alunos?pesquisa=' + encodeURIComponent(pesquisa));
-          const alunos = await resposta.json();
+          const resposta = await fetch('/api/registros?pesquisa=' + encodeURIComponent(pesquisa));
+          const registros = await resposta.json();
 
           if (!resposta.ok) {
-            throw new Error(alunos.erro);
+            throw new Error(registros.erro);
           }
 
-          listaAlunos = alunos;
+          listaBestiario = registros;
 
-          if (alunos.length === 0) {
+          if (registros.length === 0) {
             tbody.innerHTML =
-              '<tr><td colspan="8">Nenhum aluno encontrado.</td></tr>';
+              '<tr><td colspan="8">Nenhum registro encontrado.</td></tr>';
             return;
           }
 
-          tbody.innerHTML = alunos.map(a => `
+          tbody.innerHTML = registros.map(b => `
             <tr>
-              <td>${a.id_aluno}</td>
-              <td>${a.matricula}</td>
-              <td>${a.nome_aluno}</td>
-              <td>${a.cpf}</td>
-              <td>${a.celular ?? ''}</td>
-              <td>${a.id_curso}</td>
-              <td>${a.nome_curso}</td>
-              <td><button onclick="editarAluno(${a.id_aluno})">Editar</button> <button onclick="deletarAluno(${a.id_aluno})">Deletar</button></td>
+              <td>${b.id_criatura}</td>
+              <td>${b.nome_besta}</td>
+              <td>${b.localizacao}</td>
+              <td>${b.ecos}</td>
+              <td>${b.nome_fraqueza}</td>
+              <td>${b.nome_status}</td>
+              <td><button onclick="editarAluno(${b.id_criatura})">Editar</button> <button onclick="deletarRegistro(${b.id_criatura})">Deletar</button></td>
             </tr>`).join('');
 
         } catch (erro) {
@@ -95,72 +94,72 @@
         }
       }
 
-      let listaAlunos = [];
+      let listaBestiario = [];
 
-      carregarAlunos();
+      carregarRegistro();
 
-      function editarAluno(id) {
-        const a = listaAlunos.find(aluno => aluno.id_aluno == id);
+      function editarRegistro(id) {
+        const a = listaBestiario.find(bestiario => bestiario.id_criatura == id);
 
-        document.getElementById('id_aluno').value = a.id_aluno;
-        document.getElementById('matricula').value = a.matricula;
-        document.getElementById('nome').value = a.nome_aluno;
-        document.getElementById('cpf').value = a.cpf;
-        document.getElementById('celular').value = a.celular ?? '';
-        document.getElementById('id_curso').value = a.id_curso;
+        document.getElementById('id_criatura').value = b.id_criatura;
+        document.getElementById('nome').value = b.nome_besta;
+        document.getElementById('localizacao').value = b.localizacao;
+        document.getElementById('ecos').value = b.ecos;
+        document.getElementById('id_fraqueza').value = b.id_fraqueza;
+        document.getElementById('id_status').value = b.id_fraqueza;
         window.scrollTo(0, 0);
       }
 
-      async function deletarAluno(id) {
-        if (!confirm('Deseja realmente deletar este aluno?')){
+      async function deletarRegistro(id) {
+        if (!confirm('Deseja realmente deletar este registro?')){
           return;
         }
 
-        const resposta = await fetch(`/api/alunos/${id}`, {
+        const resposta = await fetch(`/api/registros/${id}`, {
           method: "DELETE"
         });
         const resultado = await resposta.json();
 
         if (resposta.ok) {
-          alert("Cadastro excluído!");
-          carregarAlunos();
+          alert("Registro excluído!");
+          carregarRegistro();
         } 
         
         else {
-          alert("Erro ao excluir cadastro.");
+          alert("Erro ao excluir registro.");
         }
       }
 
       function pesquisar(evento) {
         evento.preventDefault();
-        carregarAlunos();
+        carregarRegistro();
       }
 
       function limparPesquisa() {
         document.getElementById('pesquisa').value = '';
-        carregarAlunos();
+        carregarRegistro();
       }
 
-      document.getElementById('form-aluno').addEventListener('submit', async (evento) => {
+      document.getElementById('form-registro').addEventListener('submit', async (evento) => {
         evento.preventDefault();
 
-        const id = document.getElementById('id_aluno').value;
+        const id = document.getElementById('id_criatura').value;
 
-        const aluno = {
-          matricula: document.getElementById('matricula').value,
+        const bestiario = {
           nome: document.getElementById('nome').value,
-          cpf: document.getElementById('cpf').value,
-          celular: document.getElementById('celular').value,
-          id_curso: document.getElementById('id_curso').value,
+          localizacao: document.getElementById('localizacao').value,
+          ecos: document.getElementById('ecos').value,
+          id_fraqueza: document.getElementById('id_fraqueza').value,
+          id_status: document.getElementById('id_status').value,
         };
 
         const metodo = id ? 'PUT' : 'POST';
-        const endereco = id ? '/api/alunos/' + id : '/api/alunos';
+        const endereco = id ? '/api/registros/' + id : '/api/registros';
 
         const resposta = await fetch(endereco, {
           method: metodo,
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(aluno)
+          body: JSON.stringify(bestiario)
         });
 
         const resultado = await resposta.json();
@@ -169,10 +168,10 @@
           resultado.mensagem ?? resultado.erro;
 
         if (resposta.ok) {
-          document.getElementById('form-aluno').reset();
-          document.getElementById('id_aluno').value = '';
-          document.getElementById('titulo-form').textContent = 'Novo aluno';
-          carregarAlunos();
+          document.getElementById('form-registro').reset();
+          document.getElementById('id_criatura').value = '';
+          document.getElementById('titulo-form').textContent = 'Novo registro';
+          carregarRegistro();
         }
     });
     </script>
