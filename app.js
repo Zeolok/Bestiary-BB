@@ -23,10 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.get('/fibbauru', (req, res) => {
-res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 app.get('/api/registros', async (req, res) => {
     try {
         let sql = `
