@@ -29,7 +29,6 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 - PORT=3000
 
 7. Execute `npm start` no terminal do VS Code.
-8. Acesse https://localhost:3000 no navegador.
 
 ## Nome do Integrante [Individual]
 
