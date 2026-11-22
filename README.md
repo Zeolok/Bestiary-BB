@@ -16,7 +16,7 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 
 1. Baixe o zip do código fonte nos lançamentos.
 2. Abra a pasta do projeto no Visual Studio Code.
-3. Execute `npm install` no terminal.
+3. Execute `npm install` e `npm init -y` no terminal.
 4. Execute o arquivo script.sql no MySQL Workbench para criar o banco de dados, as tabelas e os registros iniciais.
 5. Crie um arquivo .env na raiz do projeto utilizando o .env.example como modelo.
 6. Configure as variáveis de ambiente conforme suas credenciais do MySQL:

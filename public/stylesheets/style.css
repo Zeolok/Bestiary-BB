@@ -230,17 +230,14 @@ header p:last-child {
 ========================================= */
 
 .layout {
+    width: 95%;
     max-width: 1600px;
     margin: 32px auto 0;
-    padding: 0 32px;
+    align-items: start;
 
     display: grid;
     grid-template-columns: 220px minmax(0, 1fr);
-
     gap: 28px;
-    align-items: start;
-    position: relative;
-    transform: translateX(-80px);
 }
 
 main {
@@ -969,8 +966,9 @@ dialog .botoes {
 @media (max-width: 730px) {
 
     .layout {
+        transform: none;
         grid-template-columns: 1fr;
-        padding: 0 14px;
+        width: 95%;
     }
 
     aside {
