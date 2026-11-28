@@ -32,7 +32,7 @@ de Bloodborne (videogame), desenvolvido para fins acadêmicos.
 
 ## Nome do Integrante [Individual]
 
-- Gabriel Bettini Morato
+- Gabriel Morato
 
 ## Acesso
 
